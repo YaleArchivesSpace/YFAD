@@ -987,11 +987,14 @@
         </xsl:attribute>
       </xsl:if>
       <xsl:choose>
+        <!-- might also not start with bulk, like so:
+          <unitdate normal="1947/2012" type="bulk">circa 1947-2012</unitdate>
+          -->
         <!-- need to convert these to human readable form if more granular than just a 4-digit year-->
         <xsl:when test="not(@normal) or matches(replace(., '/|-|bulk', ''), '[\D]')">
           <!--ASpace EAD exporter will append 'bulk' to the beginning of the output, so it should be safe to select the substring-after in this case.
             if the exporter is updated in a future version, we can just change this to apply templates-->
-          <xsl:value-of select="substring-after(., 'bulk ')"/>
+          <xsl:value-of select="replace(., 'bulk ', '')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="first-date" select="replace(substring-before(@normal, '/'), '\D', '')"/>
