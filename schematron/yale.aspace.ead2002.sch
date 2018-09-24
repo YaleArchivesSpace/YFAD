@@ -2,10 +2,9 @@
 <schema xmlns="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2">
     <ns uri="http://www.w3.org/1999/xlink" prefix="xlink"/>
     <ns uri="urn:isbn:1-931666-22-9" prefix="ead"/>
-    
+    <!-- last updated: 2017-11-16 --> 
     <title>Schematron validations to ensure YFAD compliance.</title>
     
-
     <pattern>
         <rule context="ead:archdesc">
             <assert test="@level = 'collection'">You must change this level attribute to "collection" in ArchivesSpace. "<value-of select="@level"/>" is not a valid value at this level of description at YUL.</assert>
@@ -17,7 +16,7 @@
     <pattern>
         <rule context="ead:eadid">
             <assert test="matches(.,
-                    '(mssa\.((ms|ru)\.[0-9]{4}[A-Z]?|pubs\.[0-9a-z]*))|(divinity\.([0-9a-zA-Z]+(\.[0-9]{1})?|bib\.[0-9]*))|(beinecke\.[0-9a-zA-Z]{2,16}(\.[0-9]{1})?)|(music\.(mss|misc)\.[0-9]{4}(\.[0-9]{1})?)|(arts\.(aob|dra|art|bkp)\.[0-9]{4}(\.[0-9]{1})?)|(vrc\.[0-9]{4}(\.[0-9]{1})?)|(med\.(ms|pam)\.[0-9]{4}(\.[0-9]{1})?)|(ycba\.(mss|ar)\.[0-9]{4}(\.[0-9]{1})?)|(ypm\.[a-z]{2,7}\.[0-9]{6})|(lwl\.[a-z]{2,7}\.[0-9]{1,6})|(yul\.[0-9a-zA-Z\.]{2,16})')">
+                    '(mssa\.((ms|ru|hvt)\.[0-9]{4}[A-Z]?|pubs\.[0-9a-z]*))|(divinity\.([0-9a-zA-Z]+(\.[0-9]{1})?|bib\.[0-9]*))|(beinecke\.[0-9a-zA-Z]{2,16}(\.[0-9]{1})?)|(music\.(mss|misc)\.[0-9]{4}(\.[0-9]{1})?)|(arts\.(aob|dra|art|bkp)\.[0-9]{4}(\.[0-9]{1})?)|(vrc\.[0-9]{4}(\.[0-9]{1})?)|(med\.(ms|pam)\.[0-9]{4}(\.[0-9]{1})?)|(ycba\.(mss|ar)\.[0-9]{4}(\.[0-9]{1})?)|(ypm\.[a-z]{2,7}\.[0-9]{6})|(lwl\.[a-z]{2,7}\.[0-9]{1,6})|(yul\.[0-9a-zA-Z\.]{2,16})')">
                 The EAD ID value for this collection does not adhere to our local best practices.  You must correct this issue before uploading to YFAD
             </assert>
         </rule>
@@ -84,6 +83,21 @@
         <rule context="*[@level ='otherlevel']">
             <assert test="@otherlevel">If the value of a level attribute is "otherlevel', then you
                 must specify the value of the otherlevel attribute</assert>
+        </rule>
+    </pattern>
+    
+    <pattern>
+        <rule context="ead:head">
+            <report test="lower-case(.) = 'typecollection'">
+                Please verity that this finding aid does not contain a note that should remain unpublished.
+                The note, "<value-of select=".."/>," contains a head element that usually indicates 
+                that this note is a staff-only Preservica note.
+            </report>
+            <report test="contains(lower-case(.), 'samma')">
+                Please verity that this finding aid does not contain a note that should remain unpublished.
+                The note, "<value-of select=".."/>," contains a head element that includes the word "Samma", 
+                which typically indicate that the note is meant to be internal-only.
+            </report>
         </rule>
     </pattern>
 

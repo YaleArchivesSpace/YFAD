@@ -3,6 +3,7 @@
   Transform ArchivesSpace EAD output to be EAD compliant with Yale's EAD best practice guidelines
   
   maintained by: mark.custer@yale.edu
+  updated to conform with ASpace versions 1.5.x
   
   this file uses the yale.at2yalebpgs.xsl stylesheet, which is maintained by michael.rush@yale.edu, as its foundation.
   
@@ -130,6 +131,18 @@
       <xsl:apply-templates select="@* | node()"/>
     </xsl:copy>
   </xsl:template>
+  
+  <!--MDC:  better to suppress internal-only unitids, now produced by ASpace verison 2.x and higher,
+    at all times.  These will only hold Archivists' Toolkit database values, so scrub 'em! -->
+  <xsl:template match="ead:unitid[@audience='internal']" priority="10"/>
+  
+  <!--MDC:  we can't have an empty DSC with a single head element for our PDF process, so if
+    every c01 is internal only, we must remove the DSC altogether
+  should be a nicer way to handle this, but the following seems to work in every variation tested so far.
+  -->
+  <xsl:template match="ead:dsc[ead:c][every $x in ead:c/@audience satisfies $x eq 'internal'][every $x in ead:c satisfies $x/@audience]
+    | ead:dsc[ead:c01][every $x in ead:c01/@audience satisfies $x eq 'internal'][every $x in ead:c01 satisfies $x/@audience]"
+    priority="10"/>
 
   <!-- if it's listed "unpublished" in ASpace, let's keep it unpublished no matter how the file is serialized into EAD
   (aside from an exception with MSSA records, when a restrict series is listed as internal only, but that top-level info still needs 
@@ -290,7 +303,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="substring-after(ead:head, ') ')"/>
       </xsl:element>
-      <xsl:apply-templates select="ead:* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
       <xsl:apply-templates
         select="../ead:*[local-name() = $grouping-element-name][matches(ead:head, '^\d\)')][position() gt 1]/ead:*[not(local-name() = 'head')]"
       />
@@ -987,11 +1000,14 @@
         </xsl:attribute>
       </xsl:if>
       <xsl:choose>
+        <!-- might also not start with bulk, like so:
+          <unitdate normal="1947/2012" type="bulk">circa 1947-2012</unitdate>
+          -->
         <!-- need to convert these to human readable form if more granular than just a 4-digit year-->
         <xsl:when test="not(@normal) or matches(replace(., '/|-|bulk', ''), '[\D]')">
           <!--ASpace EAD exporter will append 'bulk' to the beginning of the output, so it should be safe to select the substring-after in this case.
             if the exporter is updated in a future version, we can just change this to apply templates-->
-          <xsl:value-of select="substring-after(., 'bulk ')"/>
+          <xsl:value-of select="replace(., 'bulk ', '')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="first-date" select="replace(substring-before(@normal, '/'), '\D', '')"/>
@@ -1006,6 +1022,10 @@
     </xsl:copy>
   </xsl:template>
 
+  <!-- ASpace requires a structured extent statement, but some of our finding aids (such as YCAL Miscellany) 
+    don't have one currently.  So if any extent statement is just equal to 0 linear feet, remove it-->
+  <xsl:template match="ead:physdesc[ead:extent[1]/lower-case(normalize-space(.)) = '0 linear feet']"/>
+  
   <xsl:template match="ead:physdesc">
     <xsl:copy>
       <xsl:apply-templates select="@* except @label"/>
@@ -1015,7 +1035,7 @@
       <xsl:choose>
         <!-- hack for "0 See container summary" statements
         when ASpace removes this requuirement, we can remove this hack-->
-        <xsl:when test="ead:extent[1][contains(normalize-space(.), 'See Container Summary')]">
+        <xsl:when test="ead:extent[1][contains(normalize-space(lower-case(replace(., '_', ' '))), 'see container summary')]">
           <xsl:apply-templates select="ead:extent[2]"/>
         </xsl:when>
         <xsl:when test="ead:extent[2]">
@@ -1119,14 +1139,14 @@
   <xsl:template match="ead:acqinfo[not(ancestor::ead:dsc)]">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="ead:custodhist[not(ancestor::ead:dsc)]">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1136,7 +1156,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$accessrestrict_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1146,7 +1166,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$userestrict_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1156,7 +1176,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$prefercite_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1166,7 +1186,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$processinfo_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1176,7 +1196,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$altformavail_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1186,7 +1206,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$relatedmaterial_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1196,7 +1216,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$separatedmaterial_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1206,7 +1226,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$accruals_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1216,7 +1236,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$appraisal_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1226,7 +1246,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$originalsloc_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1236,7 +1256,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$otherfindaid_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1246,7 +1266,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$phystech_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1256,7 +1276,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$fileplan_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1266,7 +1286,7 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$bibliography_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
@@ -1278,12 +1298,13 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$controlaccess_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="ead:archdesc/ead:odd">
     <xsl:choose>
+      <!-- what is this for?  check with MSSA if they want to retain this when we move to EAD3 (mdc) -->
       <xsl:when test="$repository = 'mssa' and starts-with(ead:p[1], 'Forms part of')"/>
       <xsl:otherwise>
         <xsl:copy>
@@ -1322,9 +1343,21 @@
       <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
         <xsl:value-of select="$dsc_head"/>
       </xsl:element>
-      <xsl:apply-templates select="* except ead:head"/>
+      <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
+  
+  <xsl:template match="ead:scopecontent[not(ancestor::ead:dsc)]">
+    <xsl:copy>
+      <xsl:copy-of select="@*"/>
+      <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
+        <xsl:value-of select="$scopecontent_head"/>
+      </xsl:element>
+      <xsl:apply-templates select="node() except ead:head"/>
+    </xsl:copy>
+  </xsl:template>
+  
+ 
 
   <!-- container madness begins, and needs to be rewritten eventually (soon!)-->
   <xsl:template match="ead:dsc//ead:did">
@@ -1344,9 +1377,9 @@
         select="
           if (ancestor::ead:c01)
           then
-            preceding::ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/ancestor::ead:c01/@id
+            preceding::ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/ancestor::ead:c01/@id
           else
-            preceding::ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/(ancestor::ead:c)[1]/@id"
+            preceding::ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/(ancestor::ead:c)[1]/@id"
       />
     </xsl:variable>
     <xsl:copy>
@@ -1356,7 +1389,7 @@
         <!--MDC: I added "../ead:c" to the test to exclude those components that have "See:" and "Stored in:" notes in DSCs that don't have numbered components -->
         <xsl:if
           test="
-            not(ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']) and not(../ead:c | ../ead:c02 | ../ead:c03 | ../ead:c04 | ../ead:c05
+            not(ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']) and not(../ead:c | ../ead:c02 | ../ead:c03 | ../ead:c04 | ../ead:c05
             | ../ead:c06 | ../ead:relatedmaterial[starts-with(normalize-space(p[1]), 'See:')] | physloc[starts-with(normalize-space(.), 'Stored in:')])">
           <xsl:choose>
             <xsl:when test="$c01AncestorID = $precedingBoxc01AncestorID">
@@ -1365,19 +1398,19 @@
                   <xsl:text>Box</xsl:text>
                 </xsl:attribute>
                 <xsl:if
-                  test="preceding::ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/@label[contains(., '(')]">
+                  test="preceding::ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/@label[contains(., '(') or contains(., '[')]">
                   <xsl:attribute name="label">
                     <xsl:call-template name="boxLabelStringStrip">
                       <xsl:with-param name="boxLabelString">
                         <xsl:value-of
-                          select="preceding::ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/@label"
+                          select="preceding::ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]/@label"
                         />
                       </xsl:with-param>
                     </xsl:call-template>
                   </xsl:attribute>
                 </xsl:if>
                 <xsl:value-of
-                  select="preceding::ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]"
+                  select="preceding::ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][1]"
                 />
               </xsl:element>
             </xsl:when>
@@ -1413,23 +1446,23 @@
   <xsl:template name="BoxCopy">
     <xsl:param name="BoxStringSequence">
       <xsl:sequence
-        select="ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']"
+        select="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']"
       />
     </xsl:param>
     <xsl:choose>
       <xsl:when
-        test="ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][2]">
+        test="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][2]">
         <!--<xsl:when test="ead:container[@type='box' or @type='Box' or @type='Box_SH' or @type='Box_NoCopy'][3]">-->
         <xsl:element name="container" namespace="urn:isbn:1-931666-22-9">
           <xsl:attribute name="type">
             <xsl:text>Box</xsl:text>
           </xsl:attribute>
           <xsl:if
-            test="ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']/@label[contains(., '[')]">
-            <xsl:if test="count(ead:container[@type = 'box' or @type = 'Box'][@label]) &lt; 11">
+            test="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']/@label[contains(., '(') or contains(., '[')]">
+            <xsl:if test="count(ead:container[@type = 'box' or @type = '' or @type = 'Box'][@label]) &lt; 11">
               <xsl:attribute name="label">
                 <xsl:for-each
-                  select="ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
+                  select="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
                   <xsl:sort order="ascending" case-order="upper-first" data-type="number"/>
                   <xsl:call-template name="boxLabelStringStrip">
                     <xsl:with-param name="boxLabelString">
@@ -1444,7 +1477,7 @@
             </xsl:if>
           </xsl:if>
           <xsl:for-each
-            select="ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
+            select="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
             <xsl:sort order="ascending" case-order="upper-first" data-type="number"/>
             <xsl:variable name="BoxPosition">
               <xsl:value-of select="position()"/>
@@ -1455,7 +1488,7 @@
               </xsl:with-param>
               <xsl:with-param name="BoxPositionSum">
                 <xsl:value-of
-                  select="count(../ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'])"
+                  select="count(../ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'])"
                 />
               </xsl:with-param>
               <xsl:with-param name="BoxValue">
@@ -1463,7 +1496,7 @@
               </xsl:with-param>
               <xsl:with-param name="prevBoxValue">
                 <xsl:for-each
-                  select="../ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
+                  select="../ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
                   <xsl:sort order="ascending" case-order="upper-first" data-type="number"/>
                   <xsl:variable name="prevBoxPosition">
                     <xsl:value-of select="number($BoxPosition) - 1"/>
@@ -1475,7 +1508,7 @@
               </xsl:with-param>
               <xsl:with-param name="nextBoxValue">
                 <xsl:for-each
-                  select="../ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
+                  select="../ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
                   <xsl:sort order="ascending" case-order="upper-first" data-type="number"/>
                   <xsl:variable name="nextBoxPosition">
                     <xsl:value-of select="number($BoxPosition) + 1"/>
@@ -1490,13 +1523,14 @@
         </xsl:element>
       </xsl:when>
       <xsl:otherwise>
+        <!-- adding a temp. update for Medical, to handle type = 'volume' -->
         <xsl:for-each
-          select="ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
+          select="ead:container[@type = 'box' or @type = '' or @type = 'volume' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
           <xsl:copy>
             <xsl:attribute name="type">
               <xsl:text>Box</xsl:text>
             </xsl:attribute>
-            <xsl:if test="@label[contains(., '[')]">
+            <xsl:if test="@label[contains(., '(') or contains(., '[')]">
               <xsl:attribute name="label">
                 <xsl:call-template name="boxLabelStringStrip">
                   <xsl:with-param name="boxLabelString">
@@ -1504,6 +1538,9 @@
                   </xsl:with-param>
                 </xsl:call-template>
               </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@type='volume'">
+              <xsl:text>Volume </xsl:text>
             </xsl:if>
             <xsl:apply-templates/>
           </xsl:copy>
@@ -1520,7 +1557,7 @@
     <xsl:param name="BoxValue"/>
     <xsl:param name="nextBoxValue">
       <xsl:value-of
-        select="normalize-space(ead:container[@type = 'box' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][$BoxPosition + 1])"
+        select="normalize-space(ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][$BoxPosition + 1])"
       />
     </xsl:param>
 
@@ -1564,12 +1601,16 @@
   </xsl:template>
 
   <!-- all of this container stuff should be udpated and shortened!!!!!!!!!!!-->
+  <!-- MDC: i still need to just redo this completely, but for now I'm changing the brackets to parens, since that's what ASpace 1.5 uses
+  update: and now i'm allowing either () or [], since ASpace 2.2 is exporting brackets again. 
+  -->
   <xsl:template name="boxLabelStringStrip">
     <xsl:param name="boxLabelString"/>
-    <xsl:param name="boxLabelStringStrip1">
-      <xsl:value-of select="substring-after($boxLabelString, '[')"/>
-    </xsl:param>
-    <xsl:value-of select="substring-before($boxLabelStringStrip1, ']')"/>
+    <xsl:variable name="boxLabelStringNew" select="translate($boxLabelString, '[]', '()')"/>
+    <xsl:variable name="boxLabelStringStrip1">
+      <xsl:value-of select="substring-after($boxLabelStringNew, '(')"/>
+    </xsl:variable>
+    <xsl:value-of select="substring-before($boxLabelStringStrip1, ')')"/>
   </xsl:template>
 
 
@@ -1947,13 +1988,13 @@
       | ead:dsc//ead:appraisal | ead:dsc//ead:prefercite |
       ead:dsc//ead:processinfo | ead:dsc//ead:separatedmaterial">
     <xsl:copy>
-      <xsl:apply-templates select="@* | * except ead:head"/>
+      <xsl:apply-templates select="@* | node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="ead:dsc//ead:odd[not(@audience = 'internal')]">
     <xsl:element name="note" namespace="urn:isbn:1-931666-22-9">
-      <xsl:apply-templates select="@* | * except ead:head"/>
+      <xsl:apply-templates select="@* | node() except ead:head"/>
     </xsl:element>
   </xsl:template>
 
@@ -2121,6 +2162,9 @@
         <xsl:when test=". = 'Library of Congress Subject Headings'">
           <xsl:value-of select="'lcsh'"/>
         </xsl:when>
+        <xsl:when test="starts-with(., 'Art ')">
+          <xsl:value-of select="'aat'"/>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>
         </xsl:otherwise>
@@ -2130,6 +2174,60 @@
   
   <!-- hack to remove the duplicate elements exported by ArchivesSpace for creator + subject -->
   <xsl:template match="ead:controlaccess/*[. = preceding-sibling::*]"/>
+  
+  <!-- we're hacking our way to better subjects/agents in ASpace.
+    one problem with that is that we're adding subfield delimerts like "$t:"
+    to ASpace's qualifier field.  Here's where we strip those values out, since they're pointless for the display
+    -->
+  <xsl:template match="ead:controlaccess/*/text()">
+    <xsl:value-of select="replace(., '\$\w:', '--')"/>
+  </xsl:template>
+  
+  <!-- hack to remove the extra paragraph element that ASpace inserts before hard-code table elements (see beinecke.sok, appendix 5, as an example)-->
+  <xsl:template match="ead:p[ead:table]">
+    <xsl:apply-templates/>
+  </xsl:template>
+  
+  <!--
+    to fix this bug, we'll look for "text" nodes that are siblings of head elements.
+  find something like that, then wrap it in a "p" tag and hope for the best.
+  i need more examples of when this can happen, though, to really fix the issue...
+  but here's the first attempt.
+  -->
+   <xsl:template match="text()[normalize-space()][preceding-sibling::ead:head][1]">
+      <xsl:apply-templates select="." mode="substitute-paragraphs"/>
+  </xsl:template>
+   
+  <xsl:template match="text()" mode="substitute-paragraphs">
+    <xsl:for-each select="tokenize(., '\n\r?')[.]">
+      <xsl:element name="p" namespace="urn:isbn:1-931666-22-9">
+        <xsl:sequence select="."/>
+      </xsl:element>
+    </xsl:for-each>
+  </xsl:template>
+  
+  <!-- need to try to break this to see if it's okay to commit-->
+  <xsl:template match="ead:*[text()[normalize-space()][preceding-sibling::ead:head][1][following-sibling::ead:*[local-name() = ('extref', 'ref')]][1]]">
+    <xsl:copy>
+      <xsl:apply-templates select="ead:head"/>
+      <xsl:element name="p" namespace="urn:isbn:1-931666-22-9">
+        <xsl:value-of select="text()[normalize-space()]"/>
+        <xsl:apply-templates select="ead:extref|ead:ref"/>
+      </xsl:element>
+    </xsl:copy>
+  </xsl:template>
+
+<!--another hurdle
+    e.g. 
+    text()[normalize-space()], * except head
+    
+          <accessrestrict id="aspace_71e514905bf3c2138541847e04a23fa2"><head>Conditions Governing
+        Access note</head>Restricted until July 1, 2048, as established by <extref
+          actuate="onRequest" show="new"
+          href="http://web.library.yale.edu/mssa/collections/research-use-of-yale-university-archives"
+          > Yale Corporation</extref>
+      </accessrestrict>
+      -->
 
   <!--addition by MDC:  this template could be shortened to just a few lines, but I'm keeping my old process for the time being.
   HOWEVER:  the dsc elements will need to be enumereated (c01, c02, etc.) if the processor did not include all of the container boxes (i.e., it won't auto number those boxes
