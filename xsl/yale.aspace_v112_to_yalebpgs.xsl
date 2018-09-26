@@ -538,11 +538,44 @@
       <xsl:apply-templates select="ead:bioghist"/>
       <xsl:apply-templates select="ead:scopecontent"/>
       <xsl:apply-templates select="ead:arrangement"/>
-      <xsl:apply-templates select="ead:controlaccess"/>
+      <xsl:if test="ead:controlaccess or ead:did/ead:origination[@label = 'creator'][position() gt 1]">
+        <xsl:call-template name="create-control-access-section"/>
+      </xsl:if>
       <xsl:apply-templates select="ead:dsc"/>
       <xsl:apply-templates select="ead:odd"/>
       <xsl:apply-templates select="ead:index"/>
     </xsl:copy>
+  </xsl:template>
+  
+  <xsl:template name="create-control-access-section">
+    <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
+      <xsl:attribute name="id">
+        <xsl:value-of select="$controlaccess_id"/>
+      </xsl:attribute>
+      <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
+        <xsl:value-of select="$controlaccess_head"/>
+      </xsl:element>
+      <xsl:element name="p" namespace="urn:isbn:1-931666-22-9">
+        This collection is indexed under the following access points in
+        <xsl:element name="extref" namespace="urn:isbn:1-931666-22-9">
+          <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink" select="'http://orbis.library.yale.edu/'"/>
+         <xsl:text>Orbis</xsl:text>
+        </xsl:element>, the Yale University Library online catalog.
+      </xsl:element>
+      <xsl:apply-templates select="ead:controlaccess"/>
+      <xsl:if test="ead:did/ead:origination[@label = 'creator'][position() gt 1]">
+        <xsl:call-template name="control-access-for-700-links"/>
+      </xsl:if>
+    </xsl:element>    
+  </xsl:template>
+  
+  <xsl:template name="control-access-for-700-links">
+    <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
+      <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
+        <xsl:text>Added Entries</xsl:text>
+      </xsl:element>
+      <xsl:copy-of select="ead:did/ead:origination[@label = 'creator'][position() gt 1]/*"/>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="ead:archdesc/ead:did">
@@ -912,6 +945,10 @@
   </xsl:template>
 
   <xsl:template match="ead:archdesc/ead:did/ead:origination[@label = 'source']"/>
+  
+  <!-- we're going to copy over these "700" type links into a different controlaccess section
+  because of that, we're filtering them out here -->
+  <xsl:template match="ead:archdesc/ead:did/ead:origination[@label = 'creator'][position() gt 1]"/>
 
   <xsl:template match="ead:archdesc/ead:did/ead:unittitle">
     <xsl:copy>
@@ -1292,12 +1329,7 @@
 
   <xsl:template match="ead:archdesc/ead:controlaccess">
     <xsl:copy>
-      <xsl:attribute name="id">
-        <xsl:value-of select="$controlaccess_id"/>
-      </xsl:attribute>
-      <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
-        <xsl:value-of select="$controlaccess_head"/>
-      </xsl:element>
+      <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">Subjects</xsl:element>
       <xsl:apply-templates select="node() except ead:head"/>
     </xsl:copy>
   </xsl:template>
