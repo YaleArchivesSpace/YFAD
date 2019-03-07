@@ -1,0 +1,77 @@
+/*
+            ==================================================================
+            =          YUL Common CSS for presenting EAD 2002 as XHTML - Print Stylesheet        =
+            ==================================================================
+            
+            created:	2008-04-02
+            updated:	2009-12-22
+            contact:	michael.rush@yale.edu, findingaids.feedback@yale.edu, 
+
+
+*/
+
+/*========== Print Styles ==========*/
+
+body, div, td, p, span, a {
+font-family: georgia, "Trebuchet MS" , serif;
+font-size: 12pt;
+background: white;
+color: black;
+line-height: normal;
+height:auto;
+overflow:visible;
+}
+
+/*body, div#FindingAid {
+background: white;
+color: black;
+}*/
+	
+#center_container #center_box {
+margin: 0px; 
+width: 100%;
+padding: 0px;
+border: 0px;
+position:static;
+}
+
+#FindingAid a:link, #FindingAid a:visited {
+background: white; 
+color: black; 
+text-decoration: underline;
+}
+
+/*=== <div>s suppressed/not printed ===*/
+
+div.header_line1 {
+display: none;
+}
+
+/*div.hdr_yellow_strip {
+display: none;
+}*/
+
+#nav2 {
+display: none;
+}
+
+#breadcrumbs {
+display: none;
+}
+
+/*#spacer_row {
+display: none;
+}*/
+
+#left_menu  { 
+display: none;
+}
+
+div.navigator {
+display:none;
+}
+
+#footer  { 
+display: none;
+}
+    

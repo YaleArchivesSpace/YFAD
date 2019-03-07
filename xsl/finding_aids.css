@@ -1,0 +1,1312 @@
+/*
+            Finding Aids Database CSS file
+            Created: 12/10/2008
+            Updated: 2011-01-18 kls
+            Contact: kalee.sprague@yale.edu or michael.rush@yale.edu
+*/
+
+/*
+            Note - CSS file is in three sections:
+             1) Imported Yale front door styles
+             2) FGS Header, Footer, Search and result page styles
+             3) Finding Aid HTML display styles
+ */
+ 
+/* --------------------------------------Imported ydl.css styles------------------------------------------------------------- */
+
+body, div, p, td, span, a
+{
+	font-family: georgia, "Trebuchet MS" , serif;
+	font-size: 12px;
+	color: #333333;
+	line-height: 17px;
+}
+
+.hitHighlight {
+background-color:yellow;
+font-size:1em;
+line-height:normal;
+}
+
+.well { 
+background-color: #F6F6F6;
+border-bottom-color: #E3E3E3;
+border-bottom-left-radius: 4px;
+border-bottom-right-radius: 4px;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+border-left-color: #E3E3E3;
+border-left-style: solid;
+border-left-width: 1px;
+border-right-color: #E3E3E3;
+border-right-style: solid;
+border-right-width: 1px;
+border-top-color: #E3E3E3;
+border-top-left-radius: 4px;
+border-top-right-radius: 4px;
+border-top-style: solid;
+border-top-width: 1px;
+box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.047);
+}
+
+/*kls height and overflow tags below overcome IE position fixed bug */
+body
+{
+	background-color: #fff;
+	margin: 0px;
+	min-width: 1070px;
+	height: 100%;
+	overflow-y: auto;
+}
+
+
+/*  header image placement */
+#header_title
+{
+	margin: 0;
+	width: 413px;
+	height: 36px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+#titlebarbox
+{
+	border-left: 1px solid #d87a00;
+	border-right: 1px solid #d87a00;
+}
+
+img
+{
+	display: block;
+}
+a img
+{
+	border: none;
+}
+
+/* yellow line below header & top menu links */
+.header_line1
+{
+	border-bottom: 1px solid #f9be00;
+	height: 47px;
+}
+
+#html_pdf
+{
+float:right;
+margin-left: 170px;
+color: #5784a3;
+}
+
+/* yellow band below top horizontal menu */
+.hdr_yellow_strip
+{
+	border-bottom: 1px solid #f9be00;
+	height: 12px;
+	background-color: #fef4d4;
+}
+
+/* yellow band below top horizontal menu */
+#title_row
+{
+	margin: 0 0 0 23px;
+	border-bottom: 1px solid #d97900;
+}
+#title_row2
+{
+	width: 855px;
+	height: 50px;
+	color: #d87a00;
+}
+
+.submenu
+{
+	margin-left:60px;
+	margin-right:5px;
+	color:#D87A00;
+}
+
+/*  page title spacing and text formatting (universal) */
+#page_title
+{
+	position: absolute;
+	left: 23px;
+	margin: 14px 0 0 0;
+}
+#page_title_link
+{
+	font-size: 19px;
+	line-height: 22px;
+	color: #d87a00;
+	font-weight: normal;
+	text-decoration: none;
+}
+#page_title_link:hover
+{
+	font-size: 19px;
+	line-height: 22px;
+	color: #336699;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+/* line underneath page title */
+#pgtitle_line
+{
+	border-bottom: 1px solid #d97900;
+	margin: 0px 0 0 23px;
+}
+
+
+/* ----------------------------------  */
+/*  start:  main navigation */
+/* ----------------------------------  */
+#nav_main
+{
+	font-family: Georgia, "Trebuchet MS" , serif;
+	white-space: nowrap;
+	background-color: #ffffff;
+	position: absolute;
+	left: 413px;
+	top: 0px;
+	min-width: 550px;
+	height: 47px;
+}
+a.nm_research_tools
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	color: #5784a3;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	background-color: #fffaea;
+	border-left: 1px solid #f9be00;
+}
+a.nm_libraries_and_collections
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	color: #5784a3;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	background-color: #fffaea;
+}
+a.nm_about_the_library
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	color: #5784a3;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	background-color: #fffaea;
+}
+a.nm_library_services
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	color: #5784a3;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	background-color: #fffaea;
+}
+
+/* hover states */
+a.nm_research_tools:hover
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+	border-left: 1px solid #f9be00;
+}
+a.nm_libraries_and_collections:hover
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+a.nm_about_the_library:hover
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+a.nm_library_services:hover
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+
+/* selected states */
+a.nm_research_tools_sel
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	border-left: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+a.nm_libraries_and_collections_sel
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+a.nm_about_the_library_sel
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+a.nm_library_services_sel
+{
+	font-size: 12px;
+	padding: 20px 7px 10px 7px;
+	float: left;
+	display: block;
+	text-decoration: none;
+	border-right: 1px solid #f9be00;
+	color: #da7a01;
+	background-color: #e5eaee;
+}
+/* ----------------------------------  */
+/* end: main navigation */
+/* ----------------------------------  */
+
+/* ---------------------------------  */
+/* start: main nav 2 */
+/* ---------------------------------  */
+#nav2
+{
+	color: #5784a3;
+	border-bottom: 1px solid #d87a00;
+	background-color: #E5EAEE;
+	height: 44px;
+	font-family: verdana, arial, sans-serif;
+}
+
+.nav_searchbox {
+                padding-top: 10px;
+                margin-left:44px;
+                margin-right: 10px;}
+
+.form
+	{padding:0;
+	margin:0}
+	
+#nav2 a
+{
+	color: #5784a3;
+	text-decoration: none;
+	font-family: verdana, arial, sans-serif;
+	font-size: 11px;
+}
+#nav2 a:hover
+{
+	color: #d87a00;
+	text-decoration: none;
+}
+
+/* ---------------------------------  */
+/* end: main nav 2 */
+/* ---------------------------------  */
+
+
+
+
+/* ------------------------------------FGS Header, Footer, Search and result page styles------------------------------ */
+
+#breadcrumbs {
+margin-top: 10px;
+margin-left: 22px;
+/* color: #5784a3; */
+color: #336699;
+}
+
+#breadcrumbs a
+{
+               color: #336699;
+	text-decoration: none;
+}
+
+#breadcrumbs a:hover
+{
+	color: #d87a00;
+	text-decoration: none;
+}
+
+.highlight {
+background: yellow;
+}
+
+#spacer_row {
+height: 30px;
+}
+
+#spacer-gif {
+float: right;
+height: 500px;
+}
+
+#spacer-gif2 {
+float: right;
+height: 35em;
+}
+
+#left_menu_main {
+float: left; 
+margin-top: 0px;
+margin-left: 0px;
+margin-right: 0px;
+margin-bottom: 10px;
+padding: 0px 0px 0px 0px;
+left: 8px;
+}
+
+#left_menu {
+float: left; 
+margin-top: 0px;
+margin-left: 0px;
+margin-right: 0px;
+margin-bottom: 10px;
+position: fixed;
+height: 79%;
+left:8px;
+background-color:#FFFFFF;
+Z-INDEX: 1;
+}
+
+#left_menu_search {
+width: 230px; 
+margin-left:20px; 
+padding: 5px; 
+border-style:solid; 
+border-color:#d87a00; 
+border-width: 1px;}
+  
+
+ #left_menu_browse {
+ width: 230px; 
+ margin-left:20px; 
+ padding: 5px; 
+ border-style:solid; 
+ border-color:#d87a00; 
+ border-width: 1px;
+ margin-top: 15px;}
+ 
+ #left_menu_facets {
+ width: 230px; 
+ margin-left:20px; 
+ padding: 5px; 
+ border-style:solid; 
+ border-color:#d87a00; 
+ border-width: 1px;
+ margin-top: 0px;} 
+  
+#left_menu_browse_adv {
+list-style: none; 
+width: 430px; 
+margin-left:20px; 
+padding: 5px; 
+border-style:solid; 
+border-color:#d87a00; 
+border-width: 1px;
+margin-top: 15px;}
+  
+#left_menu_browse ul {
+list-style: none; 
+margin: 0; 
+padding: 2px;}
+
+#left_menu_browse_adv ul {
+list-style: none; 
+margin: 0; 
+padding: 2px;}
+
+#center_box {
+margin-left:280px;
+margin-bottom: 10px;
+padding: 5px; 
+border-style:solid; 
+border-color:#d87a00; 
+border-width: 1px;
+margin-top: 0px;
+background-color:#FFFFFF;
+width: 68%;}
+
+
+
+.next_last {
+float: right;
+color: #336699;
+text-decoration: none;
+}
+
+.nohits {
+margin-left: 50px;
+width:50%;
+border-style:solid;
+border-width: 1px;
+border-color: #d87a00; 
+}
+
+a.bigtitle span {display:none;}
+
+a.bigtitle:hover span {
+color:#dd8a20;
+background: white;
+display:block;
+font-size: 10px;
+position:absolute;
+top: 105px;
+left: 580px;
+z-index:100;
+}
+
+a.bigtitle2 span {display:none;}
+
+a.bigtitle2:hover span {
+color:#000000;
+background: white;
+display:block;
+text-decoration: none;
+}
+
+ #left_menu_search_adv {
+ width: 430px; 
+ margin-left:20px; 
+ padding: 5px; 
+ border-style:solid; 
+ border-color:#d87a00; 
+ border-width: 1px;
+ margin-top: 23px;}
+ 
+#center_box_adv {
+padding: 5px; 
+border-style:solid; 
+border-color:#d87a00; 
+border-width: 1px;
+margin-left: 460px;}
+
+#Nav {
+background-color:#ffffff; 
+border:none; 
+font-weight:bold;
+text-decoration:none;
+margin-bottom: 10px;}
+
+.page_nav {
+font-weight:bold;
+}
+
+#Nav .submit {
+display:block;
+font-weight: bold;
+border-width: 0px;
+background-color:#FFFFFF;
+color: #336699;
+}
+
+
+#footer {
+                clear:  both;
+               margin-left: 20px;
+              	color: #ffcc00;
+	padding: 20px 10px 10px 23px;
+	font-family: verdana, arial, sans-serif;
+}
+
+#footer a
+{
+	color: #336699;
+	text-decoration: none;
+	font-family: verdana, arial, sans-serif;
+	font-size: 11px;
+	font-style: italic;
+}
+
+#footer a:hover
+{
+	color: #d87a00;
+	text-decoration: none;
+}
+
+.copyright
+{
+	font-family: verdana, arial, sans-serif;
+	padding: 5px 0px;
+	color: #336699;
+	font-size: 10px;
+}
+
+
+#findingaid_title {margin-left:15px;}
+
+#help {margin-left:15px;}
+					
+
+.librarian {margin-left: 770px;}
+
+.result_label {
+font-weight: bold; 
+padding-right: 5px;}
+
+.search-options {
+margin-bottom:5px; 
+margin-top: 0px;
+float: left;
+}
+
+.menu_title { 
+color: #dd8a20; 
+font-size: 15px; 
+padding: 15px 0px 0px 0px;
+font-weight: 600;}
+
+.back_to_simple {
+padding-left: 10px;
+}
+
+/* -----------------------------------HTML Finding Aid Styles------------------------------- */
+
+#FindingAid  {
+  margin:0px;
+  padding:0px;
+  /*width:100%;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  color:#333;
+  background-color: white;
+  float:left;
+  clear:right;*/
+} 
+
+#center_container {
+position:relative;
+padding-bottom:15px;
+margin-bottom: 10px;
+}
+
+#center_container #center_box {
+margin-left: 25em;
+margin-top: 0px;
+margin-bottom: 10px;
+position:absolute;
+Z-INDEX: 2;
+width: 68%
+}
+
+#FindingAid img {
+padding: 5px;
+border-width:0px;
+display:inline;
+}
+
+#FindingAid img.icon {
+padding: 0px;
+border-width:0px;
+}
+
+/*#FindingAid a:link {
+color:blue;
+background-color:inherit;
+text-decoration:none;
+}*/
+
+/*#FindingAid a:visited {
+color:maroon;
+background-color:inherit;
+text-decoration:none;
+}*/
+
+/*#FindingAid a:hover {
+color:red;
+background-color:inherit;
+text-decoration:underline;
+}*/
+
+/*#FindingAid a:active {
+color:red;
+background-color:inherit;
+text-decoration:underline;
+}*/
+
+/**** EOF: IF CSS-based overview table ****/
+
+
+#FindingAid .main  {
+/*  border:dashed;
+  border-width:1px;
+  border-color:#CCCCCC;
+  background-color: white;
+  color:#333;
+  float: right;
+  width:78%; 
+  margin: 5px 5px 5px 5px;*/
+} 
+
+
+/********** SOF: NAVIGATOR *********/
+#FindingAid div.navigator  { 
+   border-style:solid; 
+   border-color:#d87a00; 
+   border-width: 1px;
+   width: 21em; 
+   height: 77%;
+   margin:0px 0px 0px 15px; 
+   padding: 5px 5px 0px 5px;
+  }
+  
+  #FindingAid div.navigator_head { 
+  padding: 8px;
+  margin-bottom: 5px;
+  border-bottom:solid;
+  border-color:#d87a00; 
+  border-width:1px;
+  text-align:center;
+  font-size: 13px;
+  line-height: 15px;
+  font-weight:bold;
+}
+
+#FindingAid div.navigator_body { 
+  /*text-indent: -10px;*/
+  text-align:left;
+  vertical-align:top;
+  font-size: 12px;
+  font-weight: normal;
+  border-width: 1px;
+  height: 70%;
+  overflow: auto;
+}
+
+#FindingAid div.navigator_footer { 
+  padding: 5px;
+  border-top:solid;
+  border-width:1px;
+  text-align:left;
+  font-size: 12px;
+}
+
+#FindingAid span.nav_menu_title { 
+padding:5px;
+}
+
+#FindingAid div.nav_link_generic { 
+padding: 0px 0px 0px 0px ;
+margin: 0px 0px 0px 0px;
+text-align: center;
+font-style:italic;
+}
+
+/********** EOF: NAVIGATOR *********/
+  
+  /**********  <eadheader> Elements  ************/
+
+#FindingAid div.titlepage  { 
+text-align:center;
+margin: 0px 0px 0px 5px;
+} 
+
+#FindingAid div.publisher  { 
+padding: 2px 2px 2px 2px;
+margin: 2px 2px 2px 2px;
+}
+
+#FindingAid h1.titleproper  { 
+}
+
+#FindingAid h2.subtitle  { 
+} 
+
+#FindingAid h2.callNum  { 
+}
+
+#FindingAid div.titlepage_image  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.author  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.sponsor  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.publication_dates  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid span.titlepage_date_label {
+font-weight: normal;
+}
+
+#FindingAid div.publicationstmt_p  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.publicationstmt_address  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.frontmatter_note  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.creation  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.langusage  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.descrules  { 
+padding: 2px 2px 2px 2px;
+margin: 10px 2px 2px 2px;
+} 
+
+#FindingAid div.faCitation  { 
+padding: 2px 2px 2px 2px;
+margin: 2px 2px 2px 2px;
+} 
+
+
+
+/**********  <archdesc> Child Elements  ************/
+
+
+#FindingAid div.did {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid table.did {
+width: 95%;
+margin: 0px 0px 0px 0px;
+}
+
+#FindingAid td.did_label {
+font-weight:bold;
+font-variant:small-caps;
+font-size: 14px;
+line-height: 20px;
+text-align:right;
+vertical-align:top;
+padding: 2px 2px 7px 2px;
+width: 25%;
+}
+
+#FindingAid td.did_entry {
+text-align:left;
+vertical-align:bottom;
+padding: 2px 2px 7px 10px;
+width: 75%;
+}
+
+#FindingAid div.admininfo {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.provenance {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.acqinfo {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.custodhist {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.accessrestrict {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.userestrict {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.prefercite {
+margin: 0px 0px 0px 30px;
+}
+
+#FindingAid div.processinfo {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.altformavail {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.relatedmaterial {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.separatedmaterial {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.accruals {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.appraisal {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.originalsloc {
+margin: 0px 0px 0px 30px;
+}
+
+#FindingAid div.otherfindaid {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.phystech {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.fileplan {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.bibliography {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+#FindingAid div.bioghist {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.scopecontent {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.arrangement {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.controlaccess {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.dsc {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.odd {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.index {
+margin: 0px 0px 0px 5px;
+text-align:left;
+}
+
+#FindingAid div.sub_block {
+margin: 0px 0px 0px 30px;
+text-align:left;
+}
+
+
+/**********  <c0x> Elements  ************/
+
+#FindingAid h2.series_title  { 
+text-align:center;
+}
+
+#FindingAid table.dsc {
+width:100%;
+margin: 10px 5px 10px 5px;
+}
+
+#FindingAid th.box {
+padding: 2px 2px 3px 2px;
+text-align:center;
+vertical-align:top;
+width:10%;
+font-weight: bold;
+}
+
+#FindingAid th.folder {
+padding: 2px 2px 3px 2px;
+text-align:center;
+vertical-align:top;
+width:10%;
+font-weight: bold;
+}
+
+#FindingAid th.reel {
+padding: 2px 2px 3px 2px;
+text-align:center;
+vertical-align:top;
+width:10%;
+font-weight: bold;
+}
+
+#FindingAid th.desc {
+padding: 2px 2px 3px 2px;
+text-align:left;
+vertical-align:top;
+font-weight: bold;
+}
+
+#FindingAid th.unitdate {
+padding: 2px 2px 3px 2px;
+text-align:left;
+vertical-align:top;
+width:15%;
+font-weight: bold;
+}
+
+#FindingAid td.box {
+padding: 2px 2px 3px 2px;
+text-align:center;
+vertical-align:top;
+width:10%;
+}
+
+#FindingAid td.folder {
+padding: 2px 2px 3px 2px;
+text-align:center;
+vertical-align:top;
+width:10%;
+}
+
+#FindingAid td.reel {
+padding: 2px 2px 3px 2px;
+text-align:center;
+vertical-align:top;
+width:10%;
+}
+
+#FindingAid td.desc {
+padding: 2px 2px 3px 2px;
+text-align:left;
+vertical-align:top;
+}
+
+#FindingAid td.unitdate {
+padding: 2px 2px 3px 2px;
+text-align:left;
+vertical-align:top;
+width:15%;
+}
+
+#FindingAid span.c0x-unittitle {
+font-size: 13px;
+line-height: 15px;
+}
+
+#FindingAid span.c0x-physdesc {
+font-style: italic;
+}
+
+
+/**********  <c0x> <did> Sibling Elements  ************/
+
+#FindingAid div.c0x-did-siblings {
+padding: 0px 30px 5px 0px;
+}
+
+
+/**********  Block Data Elements  ************/
+
+#FindingAid h1{
+padding: 4px 4px 4px 4px;
+margin: 15px 2px 15px 2px;
+font-size: 25px;
+line-height: 30px;
+font-weight: bold;
+}
+
+#FindingAid h2{
+padding: 4px 4px 4px 4px;
+margin: 15px 2px 2px 2px;
+font-size: 20px;
+line-height: 25px;
+font-weight: bold;
+}
+
+#FindingAid h3{
+padding: 4px 4px 4px 4px;
+margin: 15px 2px 2px 2px;
+font-size: 15px;
+line-height: 20px;
+font-weight: bold;
+}
+
+#FindingAid p {
+padding: 4px 4px 4px 4px;
+margin: 2px 5px 5px 15px;
+}
+
+#left_menu_search p {
+padding: 0px;
+margin: 0px;
+}
+
+#FindingAid p.bibref {
+padding: 4px 4px 4px 4px;
+margin: 2px 5px 5px 30px;
+text-indent: -15px;
+}
+
+#FindingAid p.bibref-c0x {
+padding: 0px 0px 4px 0px;
+margin: 0px 0px 3px 15px;
+text-indent: -15px;
+}
+
+#FindingAid p.c0x {
+padding: 0px 0px 4px 0px;
+margin: 0px 0px 3px 0px;
+}
+
+#FindingAid blockquote {
+padding: 4px 4px 4px 4px;
+}
+
+#FindingAid address {
+font-style: normal;
+}
+
+/**********  Chronlist  Table Elements  ************/
+
+#FindingAid table.chronlist {
+width: 90%;
+margin: 0px 0px 0px 25px;
+}
+
+#FindingAid th.chrondate {
+text-align: left;
+font-weight: bold;
+padding: 2px 4px;
+width: 20%;
+}
+
+#FindingAid th.chronevent {
+text-align: left;
+font-weight: bold;
+padding: 2px 4px;
+width: 80%;
+}
+
+#FindingAid td.chrondate-1 {
+text-align: left;
+padding: 2px 4px;
+width: 20%;
+background-color:#DEE0E9;
+color:inherit;
+}
+
+#FindingAid td.chronevent-1 {
+text-align: left;
+padding: 2px 4px;
+width: 80%;
+background-color:#DEE0E9;
+color:inherit;
+}
+
+#FindingAid td.chrondate-2 {
+text-align: left;
+padding: 2px 4px;
+width: 20%;
+background-color:inherit;
+color:inherit;
+}
+
+#FindingAid td.chronevent-2 {
+text-align: left;
+padding: 2px 4px;
+width: 80%;
+background-color:inherit;
+color:inherit;
+}
+
+/**********  Index  Table Elements  ************/
+
+#FindingAid table.index {
+width: 90%;
+margin: 0px 0px 0px 25px;
+}
+
+#FindingAid th.namegrp {
+text-align: left;
+font-weight: bold;
+padding: 2px 4px;
+width: 30%;
+}
+
+#FindingAid th.ptrgrp {
+text-align: left;
+font-weight: bold;
+padding: 2px 4px;
+width: 70%;
+}
+
+#FindingAid td.namegrp-1 {
+text-align: left;
+padding: 2px 4px;
+width: 30%;
+background-color:#DEE0E9;
+color:inherit;
+}
+
+#FindingAid td.ptrgrp-1 {
+text-align: left;
+padding: 2px 4px;
+width: 70%;
+background-color:#DEE0E9;
+color:inherit;
+}
+
+#FindingAid td.namegrp-2 {
+text-align: left;
+padding: 2px 4px;
+width: 30%;
+background-color:inherit;
+color:inherit;
+}
+
+#FindingAid td.ptrgrp-2 {
+text-align: left;
+padding: 2px 4px;
+width: 70%;
+background-color:inherit;
+color:inherit;
+}
+
+/**********  Block Table Elements  ************/
+
+#FindingAid table {
+width: 80%;
+margin: 0px 0px 0px 25px;
+border-collapse: collapse;
+}
+
+#FindingAid th {
+text-align: left;
+font-weight: bold;
+vertical-align:top;
+padding: 2px 4px 8px 4px;
+}
+
+#FindingAid td {
+text-align: left;
+vertical-align:top;
+padding: 2px 4px 8px 4px;
+}
+
+
+/**********  Block Access Elements  ************/
+
+#FindingAid div.accessterm {
+margin: 0px 5px 0px 25px;
+padding: 2px;
+}
+
+
+/**********  Block Link Elements  ************/
+
+#FindingAid div.blocklinks {
+margin: 0px 5px 0px 25px;
+padding: 2px;
+}
+
+
+
+/********** Render Attribute Styles  ************/
+
+#FindingAid .uline {
+text-decoration: underline;
+}
+
+#FindingAid .smcaps {
+font-variant: small-caps;
+font-weight:600;
+}
+
+#FindingAid .nonproport {
+font-family: "Courier New", serif; 
+font-size:120%;
+}
