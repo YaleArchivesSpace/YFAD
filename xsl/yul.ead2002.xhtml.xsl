@@ -142,9 +142,6 @@
       </head>
       
       <body>
-        <!-- added 2017/10/12 for GTM -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVRNCC"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <xsl:call-template name="commonHeader"/>
         <div id="breadcrumbs">
           <xsl:choose>
