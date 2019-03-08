@@ -57,7 +57,7 @@
     <xsl:variable name="hl_source" select="concat($hl_path,$fedoraPID,'/',$hl_query4)"/>-->
 
 
-  <xsl:variable name="saxon_path">http://shishen.library.yale.edu/saxon/SaxonServlet</xsl:variable>
+  <xsl:variable name="saxon_path">http://drs.library.yale.edu/saxon/SaxonServlet</xsl:variable>
   <xsl:variable name="xsl_file_name">yul.ead2002.xhtml.xsl</xsl:variable>
   <xsl:variable name="xsl_style" select="concat($support_file_path,$xsl_file_name)"/>
   <xsl:variable name="xml_file_path_1">http://shishen.library.yale.edu/fedora/get/</xsl:variable>
