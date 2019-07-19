@@ -1486,6 +1486,8 @@
         test="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][2]">
         <!--<xsl:when test="ead:container[@type='box' or @type='Box' or @type='Box_SH' or @type='Box_NoCopy'][3]">-->
         <xsl:element name="container" namespace="urn:isbn:1-931666-22-9">
+          <!-- need to keep the id and parent attriubutes for any EAD to Excel mappings -->
+          <xsl:apply-templates select="ead:container[@type = 'box' or @type = '' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy'][2]/@id"/>
           <xsl:attribute name="type">
             <xsl:text>Box</xsl:text>
           </xsl:attribute>
@@ -1559,6 +1561,8 @@
         <xsl:for-each
           select="ead:container[@type = 'box' or @type = '' or @type = 'volume' or @type = 'Box' or @type = 'Box_SH' or @type = 'Box_NoCopy']">
           <xsl:copy>
+            <!-- need to keep the id and parent attriubutes for any EAD to Excel mappings -->
+            <xsl:apply-templates select="@id"/>
             <xsl:attribute name="type">
               <xsl:text>Box</xsl:text>
             </xsl:attribute>
@@ -1655,15 +1659,20 @@
       <xsl:when test="ead:container[@type = 'folder' or @type = 'Folder'][2]">
         <!--<xsl:when test="ead:container[@type='folder' or @type='Folder'][3]">-->
         <xsl:element name="container" namespace="urn:isbn:1-931666-22-9">
+          <!-- need to keep the id and parent attriubutes for any EAD to Excel mappings -->
+          <xsl:apply-templates select="ead:container[@type = 'folder' or @type = 'Folder'][2]/@id|ead:container[@type = 'folder' or @type = 'Folder'][2]/@parent"/>
           <xsl:attribute name="type">
             <xsl:text>Folder</xsl:text>
           </xsl:attribute>
+         
           <xsl:for-each select="ead:container[@type = 'folder' or @type = 'Folder']">
             <xsl:sort order="ascending" case-order="upper-first" data-type="text"/>
             <xsl:variable name="FolderPosition">
               <xsl:value-of select="position()"/>
             </xsl:variable>
             <xsl:call-template name="FolderRangeCollapse">
+              <xsl:with-param name="id" select="@id"/>
+              <xsl:with-param name="parent" select="@parent"/>
               <xsl:with-param name="FolderPosition">
                 <xsl:value-of select="$FolderPosition"/>
               </xsl:with-param>
@@ -1703,6 +1712,7 @@
       <xsl:otherwise>
         <xsl:for-each select="ead:container[@type = 'folder' or @type = 'Folder']">
           <xsl:copy>
+            <xsl:apply-templates select="@id|@parent"/>
             <xsl:attribute name="type">
               <xsl:text>Folder</xsl:text>
             </xsl:attribute>
@@ -1714,6 +1724,8 @@
   </xsl:template>
 
   <xsl:template name="FolderRangeCollapse">
+    <xsl:param name="id"/>
+    <xsl:param name="parent"/>
     <xsl:param name="FolderPosition"/>
     <xsl:param name="FolderPositionSum"/>
     <xsl:param name="prevFolderValue"/>
@@ -1768,6 +1780,8 @@
     <xsl:choose>
       <xsl:when test="ead:container[@type = 'Reel'][2]">
         <xsl:element name="container" namespace="urn:isbn:1-931666-22-9">
+          <!-- need to keep the id and parent attriubutes for any EAD to Excel mappings -->
+          <xsl:apply-templates select="ead:container[@type = 'Reel'][2]/@id|ead:container[@type = 'Reel'][2]/@parent"/>
           <xsl:attribute name="type">
             <xsl:text>Reel</xsl:text>
           </xsl:attribute>
@@ -1815,6 +1829,8 @@
       <xsl:otherwise>
         <xsl:for-each select="ead:container[@type = 'Reel']">
           <xsl:copy>
+            <!-- need to keep the id and parent attriubutes for any EAD to Excel mappings -->
+            <xsl:apply-templates select="@id"/>
             <xsl:attribute name="type">
               <xsl:text>Reel</xsl:text>
             </xsl:attribute>
