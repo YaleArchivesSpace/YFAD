@@ -49,7 +49,7 @@
   <xsl:param name="changeDesc">Transforms ArchivesSpace EAD export so that it complies with the Yale
     EAD Best Practice Guidelines.</xsl:param>
 
-  <xsl:include href="http://www.library.yale.edu/facc/xsl/include/yale.ead2002.id_head_values.xsl"/>
+  <xsl:include href="include/yale.ead2002.id_head_values.xsl"/>
 
   <!-- Repository Parameter -->
   <xsl:param name="repository">
