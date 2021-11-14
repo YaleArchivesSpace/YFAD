@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xalan="http://xml.apache.org/xalan"    
+    xmlns:xalan="http://xml.apache.org/xalan"
     xmlns:ead="urn:isbn:1-931666-22-9"
     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xsl ead xlink xsi" version="1.0">
@@ -7,14 +7,14 @@
         ======================================================================
         =          YUL Common XSLT for presenting EAD 2002 as XHTML == CONFIG module          =
         ======================================================================
-        
+
         created:	2006-06
         updated:	2018-10-29
-        contact:	michael.rush@yale.edu, mssa.systems@yale.edu, 
+        contact:	michael.rush@yale.edu, mssa.systems@yale.edu,
         requires:    http://www.library.yale.edu/facc/xsl/include/yale.ead2002.id_head_values.xsl
-       
+
     -->
-  
+
   <xsl:variable name="handleString">http://hdl.handle.net/10079/fa/</xsl:variable>
   <xsl:variable name="fedoraPID">
       <xsl:value-of select="concat(substring-before(normalize-space(/ead:ead//ead:eadid),'.'),':',substring-after(normalize-space(/ead:ead//ead:eadid),'.'))"/>
@@ -28,12 +28,12 @@
     <!--<xsl:variable name="htmlURL2">
         <xsl:value-of select="concat($saxon_path,'?style=',$xsl_style,'&amp;source=',$xml_source,'&amp;big=',$big,'&amp;adv=',$adv,'&amp;query=',$query,'&amp;filter=',$filter,'&amp;hitPageStart=',$hitPageStart,'&amp;sortFields=',$sortFields)"/>
     </xsl:variable>-->
-    <!--New htmlURL2 - ERJ 4/4/11 --> 
+    <!--New htmlURL2 - ERJ 4/4/11 -->
     <xsl:variable name="htmlURL2">
         <xsl:value-of select="concat($hl_path,'?stylename=',$xsl_file_name,'&amp;pid=',$fedoraPID,'&amp;query=',$query,'&amp;clear-stylesheet-cache=yes','&amp;hlon=',$hlon,'&amp;big=',$big,'&amp;adv=',$adv,'&amp;filter=',$filter,'&amp;hitPageStart=',$hitPageStart,'&amp;sortFields=',$sortFields)"/>
     </xsl:variable>
-    
-    
+
+
     <!-- This version of $htmlURL2 commented 2011-01-26 MR. Swith with previous to reactivate highlighting. -->
     <!--<xsl:variable name="htmlURL2">
         <xsl:value-of select="concat($saxon_path,'?style=',$xsl_style,'&amp;source=',$hl_source,'&amp;big=',$big,'&amp;adv=',$adv,'&amp;query=',$query,'&amp;filter=',$filter,'&amp;hitPageStart=',$hitPageStart,'&amp;sortFields=',$sortFields)"/>
@@ -66,15 +66,15 @@
   <xsl:variable name="print_css_file_name">yul.ead2002.xhtml.print.css</xsl:variable>
   <xsl:variable name="menu_css_file_name">mktree.css</xsl:variable>
   <xsl:variable name="menu_tree_script">mktree.js</xsl:variable>
-  
+
   <!--ERJ - new variables - 4/4/11-->
   <xsl:variable name="hl_path">http://shishen.library.yale.edu/HLTransformer/HLTransServlet</xsl:variable>
-  <xsl:variable name="hlon">yes</xsl:variable>  
+  <xsl:variable name="hlon">yes</xsl:variable>
 
   <xsl:variable name="local_unique_id">
       <xsl:value-of select="//ead:eadid/@countrycode"/><xsl:text>.</xsl:text><xsl:value-of select="//ead:eadid/@mainagencycode"/><xsl:text>.</xsl:text><xsl:value-of select="//ead:eadid"/>
   </xsl:variable>
-    
+
   <xsl:variable name="icon_audio">icon_audio.gif</xsl:variable>
   <xsl:variable name="icon_video"></xsl:variable>
   <xsl:variable name="icon_image"></xsl:variable>
@@ -84,7 +84,7 @@
   <xsl:variable name="icon_msexcel"></xsl:variable>
   <xsl:variable name="icon_powerpoint"></xsl:variable>
   <xsl:variable name="icon_msaccess"></xsl:variable>
-    
+
     <!-- Finding Aid Title -->
     <xsl:variable name="finding_aid_title">
         <xsl:choose>
@@ -99,18 +99,18 @@
             <xsl:text>: </xsl:text><xsl:value-of select="normalize-space(//ead:subtitle)"/>
         </xsl:if>
     </xsl:variable>
-    
+
     <!-- Repository Parameter -->
     <xsl:param name="repository_code">
         <xsl:value-of select="substring-before(normalize-space(/ead:ead/ead:eadheader/ead:eadid),'.')"/>
     </xsl:param>
-    
+
     <!-- place of publication-->
     <xsl:param name="publishplace">New Haven, Connecticut</xsl:param>
-    
+
     <!--create access terms from <controlaccess>, y or n?-->
     <xsl:param name="includeAccessTerms">y</xsl:param>
-    
+
     <!-- Include titlepage image? -->
     <xsl:param name="include_titlepage_image">
         <xsl:choose>
@@ -166,7 +166,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:param>
-    
+
     <!-- Template for titlepage image link -->
     <xsl:template name="titlepage_image_link">
         <xsl:choose>
@@ -184,19 +184,19 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-    
+
     <!-- Orbis Key - used in link to catalog record -->
     <xsl:param name="orbiskey">
         <xsl:value-of select="concat('(YUL)ead.', normalize-space(/ead:ead/ead:eadheader/ead:eadid))"/>
     </xsl:param>
-    
+
     <!-- Link to corresponding record in Orbis -->
     <xsl:param name="orbisUrl">
         <!--<xsl:value-of select="concat('http://orbis.library.yale.edu/cgi-bin/Pwebrecon.cgi?Search_Arg=%22',$orbiskey,'%22&amp;DB=local&amp;Search_Code=CMD&amp;CNT=50')"/>-->
         <!--<xsl:value-of select="concat('http://neworbis.library.yale.edu/vwebv/search?searchArg=%22',$orbiskey,'%22&amp;searchCode=CMD&amp;recCount=50&amp;searchType=1')"/>-->
         <xsl:value-of select="concat('http://orbis.library.yale.edu/vwebv/search?searchArg=%27',$orbiskey,'%27&amp;searchCode=GKEY&amp;recCount=50&amp;searchType=1')"/>
     </xsl:param>
-    
+
     <!-- Include DL Search Link? -->
     <xsl:param name="include_dl_search">
         <xsl:choose>
@@ -245,7 +245,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:param>
-    
+
     <!-- Include Request Form Link? -->
     <xsl:param name="include_requestForm_link">
         <xsl:choose>
@@ -294,16 +294,16 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:param>
-    
-    
-  
-    
+
+
+
+
     <!-- ********************* SECTION HEADS, LABELS, and IDs *********************** -->
-    
-    <xsl:include href="http://www.library.yale.edu/facc/xsl/include/yale.ead2002.id_head_values.xsl"/>
-    
+
+    <xsl:include href="..include/yale.ead2002.id_head_values.xsl"/>
+
     <!-- MSSA repository address -->
-    <xsl:template name="mssaRepositoryAddress"> 
+    <xsl:template name="mssaRepositoryAddress">
         Manuscripts and Archives (Sterling Memorial Library)
         <address>
             <addressline>P.O. Box 208240</addressline>
@@ -313,8 +313,8 @@
             <addressline>email: <a rel="external" href="http://www.library.yale.edu/mssa/refform.html">mssa.assist@yale.edu</a></addressline>
         </address>
     </xsl:template>
-    
-    <xsl:template name="brblRepositoryAddress-for-overview"> 
+
+    <xsl:template name="brblRepositoryAddress-for-overview">
         <xsl:text>P.O. Box 208330</xsl:text>
         <br/>
         <xsl:text>New Haven, CT 06520-8330</xsl:text>
@@ -326,8 +326,8 @@
         <br/>
         <xsl:text>Fax: (203) 432-4047</xsl:text>
     </xsl:template>
-   
-    
+
+
     <!-- ********************* Archdesc elements  *********************** -->
     <xsl:template name="bioghist_id">
         <xsl:value-of select="$bioghist_id"/><xsl:number format="1" value="count(preceding-sibling::ead:bioghist)+1"/>
@@ -347,10 +347,10 @@
     <xsl:template name="index_id">
         <xsl:value-of select="$index_id"/><xsl:number format="1" value="count(preceding-sibling::ead:index)+1"/>
     </xsl:template>
-    
+
     <!-- ********************* END SECTION HEADS, LABELS, and IDs *********************** -->
-    
-    
+
+
     <!-- ********************* BEGIN REPOSITORY LINK PARAM *********************** -->
     <xsl:param name="repository_link">
         <xsl:choose>
@@ -400,8 +400,8 @@
         </xsl:choose>
     </xsl:param>
     <!-- ********************* END REPOSITORY LINK PARAM *********************** -->
-    
-    
+
+
     <!-- ********************* BEGIN ID ANCHOR TEMPLATE *********************** -->
     <!--  @id anchor Template -->
     <xsl:template name="id">
@@ -513,12 +513,12 @@
             <xsl:value-of select="$id"/>
         </xsl:attribute>
     </xsl:template>
-    
+
     <!-- ********************* END ID ANCHOR TEMPLATE *********************** -->
-    
-    
+
+
     <!-- ********************* BEGIN <dsc> SETTINGS ************************* -->
-    
+
     <!-- containers on right? -->
     <xsl:param name="containersonright">
         <xsl:choose>
@@ -563,7 +563,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:param>
-    
+
     <!-- Include Aeon requests? -->
     <xsl:param name="includeAeonRequests">
         <xsl:choose>
@@ -575,10 +575,10 @@
             <!-- MSSA choice -->
             <xsl:when test="$repository_code='mssa'">
                 <xsl:text>y</xsl:text>
-            </xsl:when>       
+            </xsl:when>
             <!-- removing links for beinecke.wesley per temporary request  -->
             <xsl:when test="$repository_code='beinecke'
-                and (normalize-space(/ead:ead//ead:eadid)='beinecke.wesley' 
+                and (normalize-space(/ead:ead//ead:eadid)='beinecke.wesley'
                 or normalize-space(/ead:ead//ead:eadid)='beinecke.steinberg'
                 or normalize-space(/ead:ead//ead:eadid)='beinecke.livingtheatre')">
                 <xsl:text>n</xsl:text>
@@ -628,7 +628,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:param>
-    
+
     <!-- One table per <c01> or one table for all <c01>? -->
     <xsl:param name="multiple-c01-tables">
         <xsl:choose>
@@ -642,7 +642,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:param>
-    
+
     <!-- set indent levels for compnent <did> elements-->
     <xsl:template name="c0x.did.indent">
         <xsl:choose>
@@ -695,7 +695,7 @@
             </xsl:choose>
         </xsl:if>
     </xsl:template>
-    
+
     <!-- set indent levels for compnent <did> sibling elements-->
     <xsl:template name="c0x.did.sib.indent">
         <xsl:choose>
@@ -738,11 +738,11 @@
             <xsl:otherwise />
         </xsl:choose>
     </xsl:template>
-    
+
     <!-- ********************* END <dsc> SETTINGS ************************* -->
-    
+
     <!-- ********************* Begin <daogrp> Icon Templates ************************* -->
-    
+
     <xsl:template name="icon.audio">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -760,7 +760,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.video">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -778,7 +778,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.image">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -796,7 +796,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.pdf">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -814,7 +814,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.msword">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -832,7 +832,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.rtf">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -850,7 +850,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.msexcel">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -868,7 +868,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.powerpoint">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -886,7 +886,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <xsl:template name="icon.msaccess">
         <xsl:element name="img">
             <xsl:attribute name="class">
@@ -904,7 +904,7 @@
         </xsl:element>
         <xsl:text> </xsl:text>
     </xsl:template>
-    
+
     <!-- ********************* End <daogrp> Icon Templates ************************* -->
-    
+
 </xsl:stylesheet>
