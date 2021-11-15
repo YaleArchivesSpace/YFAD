@@ -300,7 +300,7 @@
 
     <!-- ********************* SECTION HEADS, LABELS, and IDs *********************** -->
 
-    <xsl:include href="../include/yale.ead2002.id_head_values.xsl"/>
+    <xsl:include href="include/yale.ead2002.id_head_values.xsl"/>
 
     <!-- MSSA repository address -->
     <xsl:template name="mssaRepositoryAddress">
