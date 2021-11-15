@@ -15,7 +15,7 @@
 
   <!--<xsl:variable name="support_file_path">file:\\\J:\MSSUNIT\Finding Aids\XSL\XSL-HTML-Test\</xsl:variable>-->
   <!--<xsl:variable name="support_file_path">http://shishen.library.yale.edu/saxon/EAD/</xsl:variable>-->
-  <xsl:variable name="support_file_path"/>
+  <xsl:variable name="support_file_path">https://raw.githubusercontent.com/YaleArchivesSpace/YFAD/master/xsl/</xsl:variable>
   <xsl:variable name="css_file_name">finding_aids.css</xsl:variable>
   <!--kls - link necessary for opening help in new window -->
   <xsl:variable name="external_link_new_win_script">external.js</xsl:variable>
