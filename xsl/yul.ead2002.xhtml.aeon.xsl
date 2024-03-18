@@ -28,39 +28,23 @@
     -->
 
   <xsl:variable name="aeonBaseURL">
-    <!-- new requirements from Steelsen, dramatically reduce what's required for the Aeon urls.  
-      
-     $aeonBaseURLServicePart1 and ServicePart2 are no longer required.
-     additionally, not all of the URL needs to be encoded any more.
-     
-     here's an example:
-     
-     the stem before service= is removed and the values after service= are unencoded and the ReturnUrl key is added to the base, so the following:
-
-https://aeon-1-dev.its.yale.edu/AeonRouting/default.aspx?service=http%3a%2f%2faeon-2-dev.its.yale.edu%2flogin.ashx%3fReturnUrl%3daeon.dll%253FAction%253D10%2526Form%253D20%2526Value%253DGenericRequestArchive%2526CallNumber%253DRU%2525201113%2526ItemTitle%253D%252522Yale%252520Reports%252522%252520Audio%252520Recordings%252520and%252520Transcripts%2526ItemAuthor%253DYale%252520University.%252520News%252520Bureau.%2526EADNumber%253Dhttp%25253A%25252F%25252Fhdl.handle.net%25252F10079%25252Ffa%25252Fmssa.ru.1113%2526ItemCitation%253D%252522Yale%252520Reports%252522%252520Audio%252520Recordings%252520and%252520Transcripts%252520(RU%2525201113).%252520Manuscripts%252520and%252520Archives%25252C%252520Yale%252520University%252520Library.%2526ItemIssue%253DSeries%252520I%2526ItemSubTitle%253DAudio%252520Recordings%2526ItemVolume%253DBox%2525205%2526ReferenceNumber%253D39002104891891
-
-Becomes:
-https://aeon-2-dev.its.yale.edu/aeon.dll?Action=10&Form=20&Value=GenericRequestArchive&CallNumber=RU%201113&ItemTitle=%22Yale%20Reports%22%20Audio%20Recordings%20and%20Transcripts&ItemAuthor=Yale%20University.%20News%20Bureau.&EADNumber=http%3A%2F%2Fhdl.handle.net%2F10079%2Ffa%2Fmssa.ru.1113&ItemCitation=%22Yale%20Reports%22%20Audio%20Recordings%20and%20Transcripts%20(RU%201113).%20Manuscripts%20and%20Archives%2C%20Yale%20University%20Library.&ItemIssue=Series%20I&ItemSubTitle=Audio%20Recordings&ItemVolume=Box%205&ReferenceNumber=39002104891891
-
--->
-
     <xsl:choose>
       <xsl:when test="$repository_code = 'beinecke' and starts-with($saxon_path, 'http://shishen')">
         <!-- BRBL DEV -->
-        <xsl:text>https://aeon-1-dev.its.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
+        <xsl:text>https://aeon-test.its.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
       </xsl:when>
       <xsl:when test="$repository_code = 'beinecke' and starts-with($saxon_path, 'http://drs')">
         <!-- BRBL PROD -->
-        <xsl:text>https://aeon-brbl.library.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
+        <xsl:text>https://aeon.library.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
       </xsl:when>
       <xsl:when
         test="not($repository_code = 'beinecke') and starts-with($saxon_path, 'http://shishen')">
         <!-- MSSA DEV -->
-        <xsl:text>https://aeon-2-dev.its.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
+        <xsl:text>https://aeon-test.library.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
       </xsl:when>
       <xsl:when test="not($repository_code = 'beinecke') and starts-with($saxon_path, 'http://drs')">
         <!-- MSSA PROD -->
-        <xsl:text>https://aeon-mssa.library.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
+        <xsl:text>https://aeon.library.yale.edu/aeon.dll?Action=10&amp;Form=20</xsl:text>
       </xsl:when>
     </xsl:choose>
   </xsl:variable>
@@ -68,7 +52,7 @@ https://aeon-2-dev.its.yale.edu/aeon.dll?Action=10&Form=20&Value=GenericRequestA
   <xsl:variable name="aeonForm">
     <xsl:choose>
       <xsl:when test="$repository_code = 'beinecke'">
-        <xsl:text>&amp;Value=GenericRequestORBIS</xsl:text>
+        <xsl:text>&amp;Value=GenericRequestMonograph</xsl:text>
       </xsl:when>
       <xsl:when test="$repository_code = 'mssa'">
         <xsl:choose>
@@ -157,7 +141,7 @@ https://aeon-2-dev.its.yale.edu/aeon.dll?Action=10&Form=20&Value=GenericRequestA
           <xsl:text>ART</xsl:text>
         </xsl:when>
         <xsl:when test="$repository_code = 'beinecke'">
-          <xsl:text>BEI</xsl:text>
+          <xsl:text>BRBL</xsl:text>
         </xsl:when>
         <xsl:when test="$repository_code = 'divinity'">
           <xsl:text>DIV</xsl:text>
