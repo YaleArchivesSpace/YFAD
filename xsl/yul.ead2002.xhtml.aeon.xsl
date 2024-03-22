@@ -276,7 +276,7 @@
         mode="noHighlight"/>
     </xsl:variable>
     <xsl:variable name="aeonVariableName">
-      <xsl:text>&amp;ItemIssue=</xsl:text>
+      <xsl:text>&amp;ItemSeries=</xsl:text>
     </xsl:variable>
     <xsl:variable name="valueString">
       <xsl:call-template name="url-encode">
@@ -381,7 +381,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="aeonVariableName">
-      <xsl:text>&amp;ItemEdition=</xsl:text>
+      <xsl:text>&amp;ItemFolder=</xsl:text>
     </xsl:variable>
     <xsl:variable name="valueString">
       <xsl:call-template name="url-encode">
