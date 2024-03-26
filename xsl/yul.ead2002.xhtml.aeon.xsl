@@ -132,7 +132,7 @@
   <!-- new variable, now that we're including multiple repository in MSSA's form -->
   <xsl:variable name="aeonSite">
     <xsl:variable name="aeonVariableName">
-      <xsl:text>&amp;site=</xsl:text>
+      <xsl:text>&amp;Site=</xsl:text>
     </xsl:variable>
     <xsl:variable name="repo-to-site_code">
       <!-- 3-character codes, per request -->
@@ -276,7 +276,7 @@
         mode="noHighlight"/>
     </xsl:variable>
     <xsl:variable name="aeonVariableName">
-      <xsl:text>&amp;ItemSeries=</xsl:text>
+      <xsl:text>&amp;Transaction.CustomFields.ItemSeries=</xsl:text>
     </xsl:variable>
     <xsl:variable name="valueString">
       <xsl:call-template name="url-encode">
@@ -381,7 +381,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="aeonVariableName">
-      <xsl:text>&amp;ItemFolder=</xsl:text>
+      <xsl:text>&amp;Transaction.CustomFields.ItemFolder=</xsl:text>
     </xsl:variable>
     <xsl:variable name="valueString">
       <xsl:call-template name="url-encode">
